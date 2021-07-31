@@ -17,7 +17,7 @@ setup(
 
       # I'm in alpha development still, so a compliant version number is a1.
       # read this as MAJOR VERSION 0, MINOR VERSION 1, MAINTENANCE VERSION 0
-      version='0.1.0a1',
+      version='0.1.0.dev1',
 
       # here is a simple description of the library, this will appear when someone searches for the library on https://pypi.org/search
       description='A python client library for word search in games like iMessage wordhunt and anagram.',
@@ -29,16 +29,13 @@ setup(
       long_description_content_type="text/markdown",
 
       # here is the URL you can find the code, this is just the GitHub URL.
-      url='https://github.com/areed1192/td-ameritrade-python-api',
+      url='https://github.com/bstudiosoriginal/WordHuntAnagram',
 
       # there are some dependencies to use the library, so let's list them out.
-      install_reqs = [
-            'websockets==8.0.2',
-            'requests==2.22.0'
-      ],
+      install_reqs = [],
 
       # some keywords for my library.
-      keywords = 'finance, td ameritrade, api',
+      keywords = 'word games, word search, anagram, wordhunt, iMessage games',
 
       # here are the packages I want "build."
       packages=find_packages(include = ['td']),
@@ -50,10 +47,10 @@ setup(
       classifiers=[
 
             # I want people to know it's still early stages.
-           'Development Status :: 3 - Alpha',
+           'Development Status :: 1 - Dev',
 
             # My Intended audience is mostly those who understand finance.
-           'Intended Audience :: Financial and Insurance Industry',
+           'Intended Audience :: Gamers or Word enthusiasts.',
 
            # My License is MIT.
            'License :: OSI Approved :: MIT License',
@@ -65,10 +62,15 @@ setup(
            'Operating System :: OS Independent',
 
            # The client is intendend for PYTHON 3
-           'Programming Language :: Python :: 3'
+           'Programming Language :: Python :: 3',
+           'Programming Language :: Python :: 3.5',
+           'Programming Language :: Python :: 3.6',
+           'Programming Language :: Python :: 3.7',
+           'Programming Language :: Python :: 3.8',
+           'Programming Language :: Python :: 3.9'
       ],
 
-      # you will need python 3.7 to use this libary.
-      python_requires='>=3.7'
+      # you will need python 3.5 to use this libary.
+      python_requires='>=3.5'
 
      )

@@ -1,9 +1,7 @@
 from logging import Logger, FileHandler, StreamHandler
 import logging
 import inspect
-import os
 import time
-import datetime
 
 
 MAX_LOG_FILES = 15
