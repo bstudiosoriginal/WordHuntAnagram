@@ -1,4 +1,4 @@
-from setuptools import setup, find_namespace_packages
+from setuptools import setup, find_packages
 
 # I want my readme to be part of the setup, so let's read it.
 with open("README.md", "r") as fh:
@@ -38,11 +38,11 @@ setup(
       keywords = 'word games, word search, anagram, wordhunt, iMessage games',
 
       # here are the packages I want "build."
-      packages=find_namespace_packages(where=['wordhuntanagram', 'wordhuntanagram/*']),
+      packages=find_packages(include=['wordhuntanagram',]),
 
       # additional package data
       package_data={
-          "wordhuntanagram": ["data/*", "logs/*"]
+          "wordhuntanagram": ["data/*", "logs", "words.json"]
       },
 
       # I also have some package data, like photos and JSON files, so I want to include those too.
@@ -52,10 +52,10 @@ setup(
       classifiers=[
 
             # I want people to know it's still early stages.
-           'Development Status :: 1 - Dev',
+           'Development Status :: 3 - Alpha',
 
             # My Intended audience is mostly those who understand finance.
-           'Intended Audience :: Gamers or Word enthusiasts.',
+           'Intended Audience :: End Users/Desktop',
 
            # My License is MIT.
            'License :: OSI Approved :: MIT License',
@@ -67,7 +67,7 @@ setup(
            'Operating System :: OS Independent',
 
            # The client is intendend for PYTHON 3
-           'Programming Language :: Python :: 3',
+           'Programming Language :: Python :: 3 :: Only',
            'Programming Language :: Python :: 3.5',
            'Programming Language :: Python :: 3.6',
            'Programming Language :: Python :: 3.7',
