@@ -1,9 +1,10 @@
 # WordHuntAnagram
- Play iMessage Anagram and wordhunt or any search word game using this module.
+ Play iMessage Anagram and wordhunt or any search word game using this `module`.
 
 # Example
 
 `
+
     word = Wordhunt(4, 4, args='yiuonhjnhffhggdb')
     word.hunt()
     print(word.words)
