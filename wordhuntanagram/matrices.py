@@ -84,7 +84,7 @@ class Matrix:
         self.__mat[column][row] = value
     
     def index(self, column, row):
-        return self.__mat[column][row]
+        return self.__mat[row][column]
 
     def mix_matrix(self):
         return Matrix(mix_matrix(self.return_matrix()))

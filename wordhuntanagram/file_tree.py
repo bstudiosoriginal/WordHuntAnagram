@@ -1,6 +1,7 @@
 import sys
 import os
 import platform
+import json
 
 
 def resource_path(relative_path, platform=platform.system()):
@@ -48,3 +49,14 @@ def resource_path(relative_path, platform=platform.system()):
             here_dir = os.path.dirname(__file__)
     else:
         return relative_path
+
+
+def convert_txt_to_json(path1, path2):
+    diction = {}
+    with open(path1, 'r') as word_handler:
+        for word in word_handler.readlines():
+            diction[word.rstrip('\n').strip('\n')] = 1
+
+    with open(path2, 'w+') as word_json_handler:
+        json.dump(diction, word_json_handler)
+    return diction

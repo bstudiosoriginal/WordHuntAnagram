@@ -60,7 +60,7 @@ class InitFile(object):
         self._add_to_trie(child[word[index]], word, index+1)
 
     def _get_trie(self):
-        if os.path.isfile(TRIE_FILE):
+        if os.path.exists(TRIE_FILE):
             try:
                 with open(TRIE_FILE, 'r') as file:
                     self.root = json.load(file)

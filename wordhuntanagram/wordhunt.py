@@ -21,7 +21,7 @@ class WordHunt(WordBase):
         # pick a point and use that point to find words
         for column in range(matrix.len_column()):
             for row in range(matrix.len_row()):
-                self.walk_ordered([[[column, row]]])
+                self.walk_ordered([[[row, column]]])
 
     def make_matrix(self, args):
         i = 0
