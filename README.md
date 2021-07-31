@@ -3,18 +3,18 @@
 
 # Example
 `
-word = Wordhunt(4, 4, args='yiuonhjnhffhggdb')
-word.hunt()
-print(word.words)
+    word = Wordhunt(4, 4, args='yiuonhjnhffhggdb')
+    word.hunt()
+    print(word.words)
+
+    anagram = Anagram(6, args='ioijbf')
+    anagram.hunt()
+    print(anagram.words)
 `
 
-` 
-anagram = Anagram(6, args='ioijbf')
-anagram.hunt()
-print(anagram.words)
-`
 ---
 Note that you have to be quick in doing all this. Its advisable to use a while loop.
+
 ---
 
 `
