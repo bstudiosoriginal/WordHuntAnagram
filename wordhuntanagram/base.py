@@ -1,14 +1,15 @@
 import json
+from wordhuntanagram.file_tree import resource_path
 from wordhuntanagram.logger import directLog
 import os
 from wordhuntanagram.matrices import Matrix
 import math
 
 # Load words into memory
-WORDS_FILE = 'wordhuntanagram/Words/words.json'
-TRIE_FILE = 'wordhuntanagram/data/trie_store.json'
+WORDS_FILE = resource_path('words.json')
+TRIE_FILE = resource_path('data/trie_store.json')
 
-print(__path__)
+
 def load_words() -> dict:
     """
     Loads dictionary trie into the memory

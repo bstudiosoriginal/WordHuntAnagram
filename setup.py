@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup, find_namespace_packages
 
 # I want my readme to be part of the setup, so let's read it.
 with open("README.md", "r") as fh:
@@ -38,7 +38,12 @@ setup(
       keywords = 'word games, word search, anagram, wordhunt, iMessage games',
 
       # here are the packages I want "build."
-      packages=find_packages(include = ['td']),
+      packages=find_namespace_packages(where=['wordhuntanagram', 'wordhuntanagram/*']),
+
+      # additional package data
+      package_data={
+          "wordhuntanagram": ["data/*", "logs/*"]
+      },
 
       # I also have some package data, like photos and JSON files, so I want to include those too.
       include_package_data=True,
