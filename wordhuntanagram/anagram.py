@@ -3,7 +3,7 @@ from wordhuntanagram.base import WordBase
 
 class Anagram(WordBase):
 
-    def __init__(self, n_column=None, matrix=None, args=None, auto_input=False):
+    def __init__(self, n_column=None, matrix=None, args=None, auto_input=True):
         if matrix is None:
             if not auto_input:
                 pass

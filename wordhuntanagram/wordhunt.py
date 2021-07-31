@@ -5,7 +5,7 @@ from wordhuntanagram.base import WordBase
 
 class WordHunt(WordBase): 
 
-    def __init__(self, n_column:int=None, n_rows:int=None, matrix:Matrix=None, args:list[str]=None, auto_input:bool=False):
+    def __init__(self, n_column:int=None, n_rows:int=None, matrix:Matrix=None, args:list[str]=None, auto_input:bool=True):
         if matrix is None:
             if not auto_input:
                 pass
