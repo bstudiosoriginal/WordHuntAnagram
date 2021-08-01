@@ -1,9 +1,10 @@
 from wordhuntanagram.wordhunt import WordHunt
+from wordhuntanagram.anagram import Anagram
 
 
 if __name__ == '__main__':
-
-    word_hunt = WordHunt(4, 4)
+    args = input('Enter words in order from left to right, top to bottom: \n')
+    word_hunt = WordHunt(4, 4, auto_input=False, args=args)
     word_hunt.hunt()
     for word in word_hunt.words:
         if len(word) >= 8:

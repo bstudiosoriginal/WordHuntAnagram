@@ -81,10 +81,11 @@ class Matrix:
         return Matrix(result)
 
     def insert(self, column, row, value):
+        print(column, row, self.__mat)
         self.__mat[column][row] = value
     
     def index(self, column, row):
-        return self.__mat[row][column]
+        return self.__mat[column][row]
 
     def mix_matrix(self):
         return Matrix(mix_matrix(self.return_matrix()))

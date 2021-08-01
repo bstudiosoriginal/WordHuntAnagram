@@ -28,7 +28,7 @@ def wordBaseTest():
 
 def WordHuntTest():
     directLog("Wordhunt Test")
-    word_hunt = WordHunt(4, 4, args='miresefrgitgndde')
+    word_hunt = WordHunt(4, 4, auto_input=False, args='miresefrgitgndde')
     directLog(f"WordHunt object created>> \n\n{word_hunt }\n\n")
     word_hunt.hunt()
     # word_hunt.walk_ordered([[[0, 0]]])
@@ -37,7 +37,7 @@ def WordHuntTest():
 
 def AnagramTest():
     directLog("Anagram Test")
-    anagram = Anagram(n_column=6, args='abrusj')
+    anagram = Anagram(n_column=6, auto_input=False, args='abrusj')
     anagram.hunt()
     directLog(anagram.words)
     

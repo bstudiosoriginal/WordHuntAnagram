@@ -16,9 +16,8 @@ class Anagram(WordBase):
     def make_matrix(self, args):
         i = 0
         for column in range(len(args)):
-            for row in range(1):
-                self._matrix.insert(column, row, args[i])
-                i += 1
+            self._matrix.insert(column, 0, args[i])
+            i += 1
 
     def hunt(self):
         words=self.findWords(self.root, self._matrix.as_string(flatten=True), '')
