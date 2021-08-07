@@ -1,9 +1,13 @@
+__all__ = ("Anagram", )
+
+from typing import Dict, List, Set, Tuple, Union
+from wordhuntanagram.matrices import Matrix
 from wordhuntanagram.base import WordBase
 
 
 class Anagram(WordBase):
 
-    def __init__(self, n_column=None, matrix=None, args=None, auto_input=True):
+    def __init__(self, n_column: int=None, matrix: Matrix=None, args: Union[List, Tuple, str]=None, auto_input: bool=True) -> None:
         if matrix is None:
             if not auto_input:
                 pass
@@ -13,19 +17,18 @@ class Anagram(WordBase):
         else:
             super().__init__(word_matrix=matrix)
 
-    def make_matrix(self, args):
+    def make_matrix(self, args: Union[List, Tuple, str]) -> None:
         i = 0
-        print(self._matrix)
         for column in range(len(args)):
             self._matrix.insert(0, column, args[i])
             i += 1
 
-    def hunt(self):
+    def hunt(self) -> None:
         words=self.findWords(self.root, self._matrix.as_string(flatten=True), '')
         for word in words:
             self.words[word] = 1
 
-    def findWords(self, trie, word, currentWord):
+    def findWords(self, trie: Dict, word: str, currentWord: str) -> Set[str]:
         myWords = set()      
         for letter_index in range(len(word)):
             if word[letter_index] in trie:

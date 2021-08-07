@@ -1,8 +1,10 @@
 import time
+from typing import List, Iterable, Any, Union
 
+__all__ = ("Matrix",)
 
 class Matrix:
-    def __init__(self, M=None, j=None, i=None, args=None):
+    def __init__(self, M:List[List[Any]]=None, j:int=None, i:int=None, args:Iterable=None) -> None:
         if args is None:
             args = []
         self.__column_number = j
@@ -40,13 +42,13 @@ class Matrix:
             self.__column_number = 3
             self.__mat = [[0] * self.__column_number for _ in range(self.__row_number)]
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         return isinstance(other, Matrix) and self.__mat == other.__mat
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(self)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return '\n'.join([''.join(['{:10}'.format(item) for item in row])
                          for row in self.return_matrix()])
 
@@ -82,17 +84,17 @@ class Matrix:
                 result[j][i] = self.return_matrix()[j][i] * scalar
         return Matrix(result)
 
-    def div(self, scalar):
+    def div(self, scalar: float):
         result = [[0] * self.__column_number for _ in range(self.__row_number)]
         for j in range(self.__row_number):
             for i in range(self.__column_number):
                 result[j][i] = self.return_matrix()[j][i] / scalar
         return Matrix(result)
 
-    def insert(self, row, column, value):
+    def insert(self, row:int, column:int, value:Any):
         self.__mat[row][column] = value
     
-    def index(self, row, column):
+    def index(self, row:int, column:int):
         return self.__mat[row][column]
 
     def mix_matrix(self):
@@ -107,22 +109,22 @@ class Matrix:
     def matrix_minor(self, i, j):
         return Matrix(minor_(self.return_matrix(), i, j))
 
-    def len_column(self):
+    def len_column(self) -> int:
         return self.__column_number
 
-    def eigenvalues(self):
+    def eigenvalues(self) -> List:
         return ei_gen_v(self.return_matrix())
 
-    def len_row(self):
+    def len_row(self) -> int:
         return self.__row_number
 
-    def return_matrix(self):
+    def return_matrix(self) -> List[List[Any]]:
         return self.__mat
 
     def as_list(self):
         pass
 
-    def as_string(self, flatten=False):
+    def as_string(self, flatten: bool=False) -> Union[str, List]:
         if not flatten:
             new = [[] * self.len_column() for _ in range(self.len_row())]
             for index_j in range(self.len_row()):
@@ -146,7 +148,7 @@ class Matrix:
         obj.__dict__.update(self.__dict__)
         return obj
 
-    def swap_matrix(self, row1, row2):
+    def swap_matrix(self, row1: int, row2: int):
         return Matrix(swap(self.return_matrix(), row1, row2))
 
     def rr_matrix(self):
@@ -155,13 +157,13 @@ class Matrix:
     def m_inverse(self):
         return Matrix(inv(self.return_matrix()))
 
-    def extract_matrix(self, index_j, index_i, size_h, size_w):
+    def extract_matrix(self, index_j: int, index_i: int, size_h: int, size_w: int):
         return Matrix(ext_m(self.return_matrix(), index_j, index_i, size_h, size_w))
 
     def transpose(self):
         return Matrix(transpose(self.return_matrix()))
 
-    def add_column(self, list_of_r=None):
+    def add_column(self, list_of_r: List[Any]=None):
         if list_of_r is not None:
             return Matrix(add_column(self.return_matrix(), list_of_r))
         else:
@@ -317,6 +319,7 @@ def swap1(m, j, i, j1, i1):
 
 
 if __name__ == '__main__':
+    
     matrix = Matrix([[7, 12, 2, 3], [5, 1, 3, 4], [1, 4, 7, 1], [2, 3, 9, 1]])
     print(matrix)
     print('\n')

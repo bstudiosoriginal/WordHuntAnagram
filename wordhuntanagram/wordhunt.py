@@ -1,3 +1,6 @@
+__all__ = ("WordHunt",)
+
+from typing import Dict, List, Tuple, Union
 from wordhuntanagram.matrices import Matrix
 from wordhuntanagram.base import WordBase
 
@@ -23,23 +26,23 @@ class WordHunt(WordBase):
             for column in range(matrix.len_column()):
                 self.walk_ordered([[[column, row]]])
 
-    def make_matrix(self, args):
+    def make_matrix(self, args: Union[List, str, Tuple]) -> None:
         i = 0
         for row in range(self._matrix.len_row()):
             for column in range(self._matrix.len_column()):
                 self._matrix.insert(row, column, args[i])
                 i += 1
 
-    def is_word(self, word, words):
+    def is_word(self, word: str, words: Union[List[str], Dict[str, int]]) -> bool:
         return word in words
         
-    def walk(self, path):
+    def walk(self, path:List[List[int, int]]) -> str:
         word = ""
         for step in path:
             word += self._matrix.index(step[1], step[0])
         return word
 
-    def is_in_trie(self, word, path):
+    def is_in_trie(self, word: str, path: List[List[int, int]]) -> bool:
         trie = self.root
         for letter in word:
             if letter in trie:
@@ -50,7 +53,7 @@ class WordHunt(WordBase):
             self.words[word] = path
         return True
 
-    def walk_ordered(self, paths, new_paths=None, index=0, trie=None):
+    def walk_ordered(self, paths: List[List[List[int, int]]], new_paths: Union[List[List[List[int, int]]], None]=None, index: int=0, trie: Dict=None) -> List[List[List[int, int]]]:
         if not new_paths:
             new_paths = []
         if not trie:
@@ -70,9 +73,8 @@ class WordHunt(WordBase):
             paths += self.walk_ordered(new_paths, index=index+1)
         return paths
         
-    def get_word(self, path):
+    def get_word(self, path: List[List[int, int]]) -> str:
         return self._matrix.index(path[1], path[0])
 
         
-
 
