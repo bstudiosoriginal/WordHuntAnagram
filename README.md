@@ -7,7 +7,7 @@
     
     from wordhuntanagram.wordhunt import WordHunt
 
-    word = WordHunt(4, 4, args='yiuonhjnhffhggdb')
+    word = WordHunt(4, 4, args='yiuonhjnhffhggdb', auto_input=False)
     word.hunt()
     print(word.words)
 
@@ -17,7 +17,7 @@
     
     from wordhuntanagram.anagram import Anagram
 
-    anagram = Anagram(6, args='ioijbf')
+    anagram = Anagram(args='ioijbf', auto_input=False)
     anagram.hunt()
     print(anagram.words)
 
