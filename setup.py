@@ -17,7 +17,7 @@ setup(
 
       # I'm in alpha development still, so a compliant version number is a1.
       # read this as MAJOR VERSION 0, MINOR VERSION 1, MAINTENANCE VERSION 0
-      version='0.1.0.dev3',
+      version='0.1.0',
 
       # here is a simple description of the library, this will appear when someone searches for the library on https://pypi.org/search
       description='A python client library for word search in games like iMessage wordhunt and anagram.',
@@ -32,7 +32,7 @@ setup(
       url='https://github.com/bstudiosoriginal/WordHuntAnagram',
 
       # there are some dependencies to use the library, so let's list them out.
-      install_reqs = [],
+      install_reqs = ['android>=0.0.1'],
 
       # some keywords for my library.
       keywords = 'word games, word search, anagram, wordhunt, iMessage games',
