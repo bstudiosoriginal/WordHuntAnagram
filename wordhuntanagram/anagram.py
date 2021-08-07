@@ -43,7 +43,7 @@ class Anagram(WordBase):
     def make_matrix(self, args: Union[List, Tuple, str]) -> None:
         i = 0
         for column in range(len(args)):
-            self._matrix.insert(0, column, args[i])
+            self._matrix.insert(column, 0, args[i])
             i += 1
 
     def hunt(self) -> None:

@@ -115,7 +115,7 @@ class WordBase(object):
             if state == 'wordhunt':
                 self._split = split
             elif state == 'anagram':
-                self._split = (1, len(args)) if len(args) else (1, 0)
+                self._split = (1, len(args)) if args else (1, 0)
             self.state = state
         if not word_matrix:
             self.n_words = n_words
@@ -193,9 +193,9 @@ class WordBase(object):
                 
         elif value is None:
             if self._split:
-                i = self._split[0]
-                j = self._split[1]
-                self._matrix = Matrix(i=i, j=j, args=['' for _ in range(int(i*j))])
+                i = self._split[1]
+                j = self._split[0]
+                self._matrix = Matrix(j=j, i=i, args=['' for _ in range(int(i*j))])
                 self._n_words = i*j
                 print('done')
             else:
@@ -208,9 +208,10 @@ class WordBase(object):
         Halts the program to allow user to change matrix. For console use only.
         """
         if self._state == 'anagram':
+            print(self._matrix)
             for column in range(self.n_words):
                 requested_value = input(f'AnagramWord index: {column}>> ')
-                self._matrix.insert(0, column, requested_value)
+                self._matrix.insert(column, 0, requested_value)
         elif self._state == 'wordhunt':
             for row in range(self._matrix.len_row()):
                 for column in range(self._matrix.len_column()):

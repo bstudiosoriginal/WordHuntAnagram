@@ -75,7 +75,7 @@ def RunTest(tests):
 
 if __name__ == '__main__':
     start_time = time.time()
-    RunTest(['wordbase', 'wordhunt', 'anagram'])
+    RunTest([ 'wordhunt', 'anagram', 'wordbase'])
     end_time = time.time()
     finish_time = end_time - start_time
     directLog(f"Finished test in {finish_time}s")

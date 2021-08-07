@@ -58,13 +58,13 @@ class WordHunt(WordBase):
     def is_word(self, word: str, words: Union[List[str], Dict[str, int]]) -> bool:
         return word in words
         
-    def walk(self, path:List[List[int, int]]) -> str:
+    def walk(self, path:List[List[int]]) -> str:
         word = ""
         for step in path:
             word += self._matrix.index(step[1], step[0])
         return word
 
-    def is_in_trie(self, word: str, path: List[List[int, int]]) -> bool:
+    def is_in_trie(self, word: str, path: List[List[int]]) -> bool:
         trie = self.root
         for letter in word:
             if letter in trie:
@@ -75,7 +75,7 @@ class WordHunt(WordBase):
             self.words[word] = path
         return True
 
-    def walk_ordered(self, paths: List[List[List[int, int]]], new_paths: Union[List[List[List[int, int]]], None]=None, index: int=0, trie: Dict=None) -> List[List[List[int, int]]]:
+    def walk_ordered(self, paths: List[List[List[int]]], new_paths: Union[List[List[List[int]]], None]=None, index: int=0, trie: Dict=None) -> List[List[List[int]]]:
         if not new_paths:
             new_paths = []
         if not trie:
@@ -95,7 +95,7 @@ class WordHunt(WordBase):
             paths += self.walk_ordered(new_paths, index=index+1)
         return paths
         
-    def get_word(self, path: List[List[int, int]]) -> str:
+    def get_word(self, path: List[List[int]]) -> str:
         return self._matrix.index(path[1], path[0])
 
         
