@@ -19,14 +19,14 @@ class WordHunt(WordBase):
         # start_with 3 letter words
         matrix = self._matrix
         # pick a point and use that point to find words
-        for column in range(matrix.len_column()):
-            for row in range(matrix.len_row()):
-                self.walk_ordered([[[row, column]]])
+        for row in range(matrix.len_row()):
+            for column in range(matrix.len_column()):
+                self.walk_ordered([[[column, row]]])
 
     def make_matrix(self, args):
         i = 0
-        for column in range(self._matrix.len_column()):
-            for row in range(self._matrix.len_row()):
+        for row in range(self._matrix.len_row()):
+            for column in range(self._matrix.len_column()):
                 self._matrix.insert(row, column, args[i])
                 i += 1
 

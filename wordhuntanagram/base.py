@@ -91,11 +91,11 @@ class WordBase(object):
         if self._force_state:
             if state == 'wordhunt':
                 self._split = split
+            elif state == 'anagram':
+                self._split = (1, len(args)) if len(args) else (1, 0)
             self.state = state
         if not word_matrix:
             self.n_words = n_words
-            if self.state == 'anagram':
-                self._split = (1, n_words)
         else:
             self.word_matrix = word_matrix
             if self.state == 'anagram':
@@ -151,11 +151,11 @@ class WordBase(object):
                     self._matrix = Matrix(i=int(symmetry_value), j=int(symmetry_value), args=['' for _ in range(int(value))])
                     self.state = 'wordhunt'
                 else:
-                    self._matrix = Matrix(j=value, i=1, args=['' for _ in range(value)])
+                    self._matrix = Matrix(j=1, i=value, args=['' for _ in range(value)])
                     self.state = 'anagram'
             else:
                 if self.state == 'anagram':
-                    self._matrix = Matrix(j=value, i=1, args=['' for _ in range(value)])
+                    self._matrix = Matrix(j=1, i=value, args=['' for _ in range(value)])
                 elif self.state == 'wordhunt':
                     if self._split:
                         i = self._split[0]
@@ -163,7 +163,7 @@ class WordBase(object):
                     else:
                         i=int(symmetry_value)
                         j=int(symmetry_value)
-                    self._matrix = Matrix(i=i, j=j, args=['' for _ in range(int(i*j))])
+                    self._matrix = Matrix(i=j, j=i, args=['' for _ in range(int(i*j))])
                     self._n_words = i*j
                 else:
                     raise ValueError(f"Unrecognized state {self.state}")    
@@ -174,6 +174,7 @@ class WordBase(object):
                 j = self._split[1]
                 self._matrix = Matrix(i=i, j=j, args=['' for _ in range(int(i*j))])
                 self._n_words = i*j
+                print('done')
             else:
                 raise ValueError(f'Number of words must be an integer else split must be defined : {self._split}')
         else:
@@ -184,14 +185,14 @@ class WordBase(object):
         Halts the program to allow user to change matrix. For console use only.
         """
         if self._state == 'anagram':
-            for index in range(self.n_words):
-                requested_value = input(f'AnagramWord index: {index}>> ')
-                self._matrix.insert(index, 0, requested_value)
+            for column in range(self.n_words):
+                requested_value = input(f'AnagramWord index: {column}>> ')
+                self._matrix.insert(0, column, requested_value)
         elif self._state == 'wordhunt':
-            for j in range(self._matrix.len_column()):
-                for i in range(self._matrix.len_row()):
-                    requested_value = input(f'Wordhunt index: {j} x {i}>> ')
-                    self._matrix.insert(j, i, requested_value)
+            for row in range(self._matrix.len_row()):
+                for column in range(self._matrix.len_column()):
+                    requested_value = input(f'Wordhunt index: {column} x {row}>> ')
+                    self._matrix.insert(row, column, requested_value)
 
     def __repr__(self):
         return str(self._matrix)

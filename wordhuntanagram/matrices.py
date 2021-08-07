@@ -1,3 +1,6 @@
+import time
+
+
 class Matrix:
     def __init__(self, M=None, j=None, i=None, args=None):
         if args is None:
@@ -8,28 +11,34 @@ class Matrix:
             self.__row_number = i
         elif j is not None:
             self.__column_number = j
-            self.__mat = [[0] * self.__row_number for _ in range(self.__column_number)]
+            self.__mat = [[0] * self.__column_number for _ in range(self.__row_number)]
         if self.__row_number is not None and self.__column_number is not None and len(args) != 0:
             t = 0
-            self.__mat = [[0] * self.__row_number for _ in range(self.__column_number)]
-            for m in range(self.__column_number):
-                for n in range(self.__row_number):
+            self.__mat = [[0] * self.__column_number for _ in range(self.__row_number)]
+            for m in range(self.__row_number):
+                for n in range(self.__column_number):
                     self.__mat[m][n] = args[t]
                     t += 1
         elif self.__row_number is not None and self.__column_number is not None and len(args) == 0:
-            self.__mat = [[0] * self.__row_number for _ in range(self.__column_number)]
-            for m in range(self.__column_number):
-                for n in range(self.__row_number):
-                    print("Enter value indexed ", m+1, " x ", n+1)
-                    self.__mat[m][n] = eval(input(""))
+            self.__mat = [[0] * self.__column_number for _ in range(self.__row_number)]
+            for m in range(self.__row_number):
+                for n in range(self.__column_number):
+                    print("Enter value indexed ", n, " x ", m)
+                    try:
+                        val = input("")
+                        self.__mat[m][n] = float(val)
+                    except Exception:
+                        self.__mat[m][n] = val
+                    finally:
+                        pass
         elif M is not None:
             self.__mat = M
-            self.__row_number = len(M[0])
-            self.__column_number = len(M)
+            self.__row_number = len(M)
+            self.__column_number = len(M[0])
         else:
             self.__row_number = 3
             self.__column_number = 3
-            self.__mat = [[0] * self.__row_number for _ in range(self.__column_number)]
+            self.__mat = [[0] * self.__column_number for _ in range(self.__row_number)]
 
     def __eq__(self, other):
         return isinstance(other, Matrix) and self.__mat == other.__mat
@@ -49,43 +58,42 @@ class Matrix:
             return Matrix(result)
 
     def __add__(self, other):
-        result = [[0] * self.__row_number for _ in range(self.__column_number)]
+        result = [[0] * self.__column_number for _ in range(self.__row_number)]
         if isinstance(other, Matrix) and self.__row_number == other.__row_number and self.__column_number == \
                 other.__column_number:
-            for j in range(self.__column_number):
-                for i in range(self.__row_number):
+            for j in range(self.__row_number):
+                for i in range(self.__column_number):
                     result[j][i] = self.return_matrix()[j][i] + other.return_matrix()[j][i]
             return Matrix(result)
 
     def __sub__(self, other):
-        result = [[0] * self.__row_number for _ in range(self.__column_number)]
+        result = [[0] * self.__column_number for _ in range(self.__row_number)]
         if isinstance(other, Matrix) and self.__row_number == other.__row_number and self.__column_number == \
                 other.__column_number:
-            for j in range(self.__column_number):
-                for i in range(self.__row_number):
+            for j in range(self.__row_number):
+                for i in range(self.__column_number):
                     result[j][i] = self.return_matrix()[j][i] - other.return_matrix()[j][i]
             return Matrix(result)
 
     def mul(self, scalar):
-        result = [[0] * self.__row_number for _ in range(self.__column_number)]
-        for j in range(self.__column_number):
-            for i in range(self.__row_number):
+        result = [[0] * self.__column_number for _ in range(self.__row_number)]
+        for j in range(self.__row_number):
+            for i in range(self.__column_number):
                 result[j][i] = self.return_matrix()[j][i] * scalar
         return Matrix(result)
 
     def div(self, scalar):
-        result = [[0] * self.__row_number for _ in range(self.__column_number)]
-        for j in range(self.__column_number):
-            for i in range(self.__row_number):
+        result = [[0] * self.__column_number for _ in range(self.__row_number)]
+        for j in range(self.__row_number):
+            for i in range(self.__column_number):
                 result[j][i] = self.return_matrix()[j][i] / scalar
         return Matrix(result)
 
-    def insert(self, column, row, value):
-        print(column, row, self.__mat)
-        self.__mat[column][row] = value
+    def insert(self, row, column, value):
+        self.__mat[row][column] = value
     
-    def index(self, column, row):
-        return self.__mat[column][row]
+    def index(self, row, column):
+        return self.__mat[row][column]
 
     def mix_matrix(self):
         return Matrix(mix_matrix(self.return_matrix()))
@@ -116,19 +124,19 @@ class Matrix:
 
     def as_string(self, flatten=False):
         if not flatten:
-            new = [[] * self.len_row() for _ in range(self.len_column())]
-            for index_j in range(self.len_column()):
-                for index_i in range(self.len_row()):
+            new = [[] * self.len_column() for _ in range(self.len_row())]
+            for index_j in range(self.len_row()):
+                for index_i in range(self.len_column()):
                     new[index_j][index_i] = str(self.index(index_j, index_i))
         else:
             new = ''
-            for index_j in range(self.len_column()):
-                for index_i in range(self.len_row()):
+            for index_j in range(self.len_row()):
+                for index_i in range(self.len_column()):
                     new += str(self.index(index_j, index_i))
         return new
 
     def identity(self):
-        result = [[0] * self.__row_number for _ in range(self.__column_number)]
+        result = [[0] * self.__column_number for _ in range(self.__row_number)]
         for j in range(self.__column_number):
             result[j][j] = 1
         return Matrix(result)
@@ -174,10 +182,8 @@ def minor_(m, j, i):
         j.append(row[:i] + row[i+1:])
     return j
 
-
 def row_mat(m, j):
     return m[j]
-
 
 def column_mat(m, i, j):
     return [m[col+j][i] for col in range(len(m)-j)]
@@ -185,12 +191,6 @@ def column_mat(m, i, j):
 
 def upper_t_m(m):
     mat_copy = m.copy()
-    for col_ in range(len(m)-1):
-        for row_ in range(col_+1, len(m)):
-            if mat_copy[col_][col_] == 0:
-                mat_copy = swap(mat_copy, col_, row_)
-        else:
-            break
     for j in range(len(m[0])-1):
         for i in range(j+1, len(m)):
             if mat_copy[j][j] != 0:
@@ -198,6 +198,9 @@ def upper_t_m(m):
                 col_ = [prime*elem for elem in mat_copy[j]]
                 row3 = [row2-row1 for row2, row1 in zip(mat_copy[i], col_)]
                 mat_copy[i] = row3
+            else:
+                if i + 1 < len(m) - 1 and all(i==0 for i in mat_copy[i+i][:j]):
+                    mat_copy = swap(mat_copy, mat_copy[i], mat_copy[i+1])
     return mat_copy
 
 
@@ -311,3 +314,58 @@ def swap1(m, j, i, j1, i1):
     if i < len(m[0]) and i1 < len(m[0]) and j < len(m) and j1 < len(m):
         m[j][i], m[j1][i1] = m[j1][i1], m[j][i]
     return m
+
+
+if __name__ == '__main__':
+    matrix = Matrix([[7, 12, 2, 3], [5, 1, 3, 4], [1, 4, 7, 1], [2, 3, 9, 1]])
+    print(matrix)
+    print('\n')
+    matrix1 = Matrix(j=4, i=3, args=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
+    print(matrix1)
+    print('\n')
+    matrix2 = Matrix(j=3, i=4, args=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
+    print(matrix2)
+    print('\n')
+    matrix3 = Matrix(j=4, i=4, args=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16])
+    print(matrix3)
+    print('\n')
+    # matrix4 = Matrix(j=2, i=2)
+    # print('\n')
+    # print(matrix4)
+    # print('\n')
+    print('Finished test on initialization.')
+    ## 
+    print('adding')
+    print(matrix3+matrix)
+    print('Subtracting')
+    print(matrix3-matrix)
+    print('Multiplying')
+    print(matrix2*matrix)
+    print('Identity: ')
+    print(matrix3.identity())
+    print('Determinant')
+    print(matrix.determinant())
+    print('Transpose: ')
+    print(matrix3.transpose())
+    print("Upper tringular matrix")
+    print(matrix1.upper_triangular_matrix())
+    matrix4 = Matrix(j=2, i=2, args=[1, 1, 2, 4])
+    start = time.time()
+    
+    print('matrix')
+    print(matrix4)
+    print('Determinant')
+    print(matrix4.determinant())
+    print("Upper tringular matrix")
+    print(matrix4.upper_triangular_matrix())
+    print('inverse')
+    print(matrix4.m_inverse())
+    print('eigenvalues')
+    print(matrix4.eigenvalues())
+    print('inverse eigenvalues')
+    print(matrix4.m_inverse().eigenvalues())
+    print('inverse upper triangular')
+    print(matrix4.m_inverse().upper_triangular_matrix())
+    print('inverse inverse')
+    print(matrix4.m_inverse().m_inverse())
+    print('finished in ', time.time()-start, 's')
