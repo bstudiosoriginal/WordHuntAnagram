@@ -23,47 +23,100 @@
 
 import time
 from typing import List, Iterable, Any, Union
+import random
 
 __all__ = ("Matrix",)
 
 class Matrix:
-    def __init__(self, M:List[List[Any]]=None, j:int=None, i:int=None, args:Iterable=None) -> None:
+    __column_number = None
+    __row_number = None
+    __mat = None
+    __args = None
+
+    def randfunc(self):
+        if not callable(self.random_func):
+            val =  self.rand_normal * random.random()
+            return val
+        else:
+            return self.random_func()
+                    
+    @property
+    def arguments(self):
+        return self.__args
+
+    @property
+    def column_number(self):
+        return self.__column_number
+
+    @property
+    def row_number(self):
+        return self.__row_number
+
+    @property
+    def mat(self):
+        return self.__mat
+
+    @column_number.setter
+    def column_number(self, value):
+        if value:
+            self.__column_number = value
+            if self.__row_number and value:
+                if self.__mat:
+                    assert len(self.__mat[0]) == value
+                self.__mat = [[0] * self.column_number for _ in range(self.row_number)]
+                if self.randomize:
+                    for i in range(self.row_number):
+                        for j in range(self.column_number):
+                            self.__mat[i][j] = self.randfunc()
+    
+    @row_number.setter
+    def row_number(self, value):
+        if value:
+            self.__row_number = value
+            if self.__column_number and value:
+                if self.__mat:
+                    assert self.__mat == value
+                self.__mat = [[0] * self.column_number for _ in range(self.row_number)]
+                if self.randomize:
+                    for i in range(self.row_number):
+                        for j in range(self.column_number):
+                            self.__mat[i][j] = self.randfunc()
+        
+    @mat.setter
+    def mat(self, value):
+        if value:
+            if not self.row_number:
+                self.__row_number = len(value)
+            if not self.column_number:
+                self.__column_number = len(value[0])
+            self.__mat = value
+            assert self.column_number == len(value[0])
+            assert self.row_number == len(value)
+       
+    @arguments.setter
+    def arguments(self, value):
+        if value:
+            if not self.__column_number or not self.__row_number:
+                raise ValueError(f"Dimensions cannot be {self.__column_number}x{self.__row_number}")
+            else:
+                t = 0
+                for m in range(self.__row_number):
+                    for n in range(self.__column_number):
+                        self.__mat[m][n] = value[t]
+                        t += 1
+        self.__args = value
+            
+    def __init__(self, M=None, j=None, i=None, randomize=False, random_func=None, rand_normal=1, precision=5, args=None):
         if args is None:
             args = []
-        self.__column_number = j
-        self.__row_number = i
-        if i is not None:
-            self.__row_number = i
-        elif j is not None:
-            self.__column_number = j
-            self.__mat = [[0] * self.__column_number for _ in range(self.__row_number)]
-        if self.__row_number is not None and self.__column_number is not None and len(args) != 0:
-            t = 0
-            self.__mat = [[0] * self.__column_number for _ in range(self.__row_number)]
-            for m in range(self.__row_number):
-                for n in range(self.__column_number):
-                    self.__mat[m][n] = args[t]
-                    t += 1
-        elif self.__row_number is not None and self.__column_number is not None and len(args) == 0:
-            self.__mat = [[0] * self.__column_number for _ in range(self.__row_number)]
-            for m in range(self.__row_number):
-                for n in range(self.__column_number):
-                    print("Enter value indexed ", n, " x ", m)
-                    try:
-                        val = input("")
-                        self.__mat[m][n] = float(val)
-                    except Exception:
-                        self.__mat[m][n] = val
-                    finally:
-                        pass
-        elif M is not None:
-            self.__mat = M
-            self.__row_number = len(M)
-            self.__column_number = len(M[0])
-        else:
-            self.__row_number = 3
-            self.__column_number = 3
-            self.__mat = [[0] * self.__column_number for _ in range(self.__row_number)]
+        self._precision = precision
+        self.rand_normal = rand_normal
+        self.random_func = random_func
+        self.randomize = randomize
+        self.column_number = j
+        self.row_number = i
+        self.mat = M
+        self.arguments = args[0] if len(args) == 1 else args
 
     def __eq__(self, other) -> bool:
         return isinstance(other, Matrix) and self.__mat == other.__mat
@@ -72,7 +125,7 @@ class Matrix:
         return hash(self)
 
     def __repr__(self) -> str:
-        return '\n'.join([''.join(['{:10}'.format(item) for item in row])
+        return '\n'.join([''.join(['{:10}'.format(round(item, self._precision) if isinstance(item, float) else item) for item in row])
                          for row in self.return_matrix()])
 
     def __mul__(self, other):
@@ -343,58 +396,81 @@ def swap1(m, j, i, j1, i1):
 
 if __name__ == '__main__':
     
-    matrix = Matrix([[7, 12, 2, 3], [5, 1, 3, 4], [1, 4, 7, 1], [2, 3, 9, 1]])
-    print(matrix)
-    print('\n')
-    matrix1 = Matrix(j=4, i=3, args=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
-    print(matrix1)
-    print('\n')
-    matrix2 = Matrix(j=3, i=4, args=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
-    print(matrix2)
-    print('\n')
-    matrix3 = Matrix(j=4, i=4, args=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16])
-    print(matrix3)
-    print('\n')
-    m4 = Matrix(j=3, i=3, args=[40.07, 0, -2.0923, 0, 64, 0, -2.0923, 0, 99.92])
-    print(m4)
-    print(m4.m_inverse())
+    # matrix = Matrix([[7, 12, 2, 3], [5, 1, 3, 4], [1, 4, 7, 1], [2, 3, 9, 1]])
+    # print(matrix)
+    # print('\n')
+    # matrix1 = Matrix(j=4, i=3, args=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
+    # print(matrix1)
+    # print('\n')
+    # matrix2 = Matrix(j=3, i=4, args=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
+    # print(matrix2)
+    # print('\n')
+    # matrix3 = Matrix(j=4, i=4, args=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16])
+    # print(matrix3)
+    # print('\n')
+    m4 = Matrix(j=3, i=3, args=[40.07, 0, -2.0923, 0, 64, 0, -2.0923, 0, 99.92], precision=17)
+    # print(m4)
+    # print(m4.m_inverse().return_matrix())
     # matrix4 = Matrix(j=2, i=2)
     # print('\n')
     # print(matrix4)
     # print('\n')
-    print('Finished test on initialization.')
-    ## 
-    print('adding')
-    print(matrix3+matrix)
-    print('Subtracting')
-    print(matrix3-matrix)
-    print('Multiplying')
-    print(matrix2*matrix)
-    print('Identity: ')
-    print(matrix3.identity())
-    print('Determinant')
-    print(matrix.determinant())
-    print('Transpose: ')
-    print(matrix3.transpose())
-    print("Upper tringular matrix")
-    print(matrix1.upper_triangular_matrix())
-    matrix4 = Matrix(j=2, i=2, args=[1, 1, 2, 4])
+    # print('Finished test on initialization.')
+    # ## 
+    # print('adding')
+    # print(matrix3+matrix)
+    # print('Subtracting')
+    # print(matrix3-matrix)
+    # print('Multiplying')
+    # print(matrix2*matrix)
+    # print('Identity: ')
+    # print(matrix3.identity())
+    # print('Determinant')
+    # print(matrix.determinant())
+    # print('Transpose: ')
+    # print(matrix3.transpose())
+    # print("Upper tringular matrix")
+    # print(matrix1.upper_triangular_matrix())
+    # matrix4 = Matrix(j=2, i=2, args=[1, 1, 2, 4])
     start = time.time()
     
-    print('matrix')
-    print(matrix4)
-    print('Determinant')
-    print(matrix4.determinant())
-    print("Upper tringular matrix")
-    print(matrix4.upper_triangular_matrix())
-    print('inverse')
-    print(matrix4.m_inverse())
-    print('eigenvalues')
-    print(matrix4.eigenvalues())
-    print('inverse eigenvalues')
-    print(matrix4.m_inverse().eigenvalues())
-    print('inverse upper triangular')
-    print(matrix4.m_inverse().upper_triangular_matrix())
-    print('inverse inverse')
-    print(matrix4.m_inverse().m_inverse())
+    # print('matrix')
+    # print(matrix4)
+    # print('Determinant')
+    # print(matrix4.determinant())
+    # print("Upper tringular matrix")
+    # print(matrix4.upper_triangular_matrix())
+    # print('inverse')
+    # print(matrix4.m_inverse())
+    # print('eigenvalues')
+    # print(matrix4.eigenvalues())
+    # print('inverse eigenvalues')
+    # print(matrix4.m_inverse().eigenvalues())
+    # print('inverse upper triangular')
+    # print(matrix4.m_inverse().upper_triangular_matrix())
+    # print('inverse inverse')
+    # print(matrix4.m_inverse().m_inverse())
+    # m = Matrix([[1, 2, 4], [4, 5, 6], [7, 8, 9]])
+    # p1 = Matrix([[0, 0, 1], [0, 1, 0], [1, 0, 0]])
+    
+    # mp1 = p1 * m
+
+    # mult1 = Matrix([[1, 0, 0], [-4/7, 1, 0], [-1/7, 0, 1]])
+
+    # mult1mp1 = mult1 * mp1
+
+    # p2 = Matrix([[1, 0, 0], [0, 0, 1], [0, 1, 0]])
+
+    # p2mult1mp1 = p2 * mult1mp1
+
+    # print(p2mult1mp1)
+
+    # print('\n')
+
+    # mult2 = Matrix([[1, 0, 0], [0, 1, 0], [0, -p2mult1mp1.index(2, 1)/p2mult1mp1.index(1, 1), 1]])
+
+    # mult2p2mult1mp1 = mult2 * p2mult1mp1
+    
+    # multiplier = mult2*p2*mult1*p1
+    # print(Matrix(M=None, j=1, i=3, args=[1, 3, 5]) * multiplier )
     print('finished in ', time.time()-start, 's')
